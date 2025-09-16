@@ -62,7 +62,7 @@ public class painel02 extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String diretorio = textField.getText();
-				SwingUtilities.invokeLater(()-> new gif(diretorio));
+				SwingUtilities.invokeLater(()-> new gifAtivar(diretorio));
 			}
 		});
 		contentPane.add(btnNewButton);
