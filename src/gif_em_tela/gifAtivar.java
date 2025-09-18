@@ -1,12 +1,16 @@
 package gif_em_tela;
 
 import java.awt.*;
+import java.io.File;
+
 import javax.swing.*;
 
 public class gifAtivar extends JWindow{
 	private int velx = 3, vely = 3;
 	private int altura = 170, largura = 170;
 	private JLabel gif_flutua;
+	private final int VELOCIDADE_MINIMA = 1;
+    private Timer timer;
 
 	public gifAtivar(String diretorio) {
 		
@@ -53,7 +57,36 @@ public class gifAtivar extends JWindow{
         });
         colisao.start();
 		
+        
 	}
+    public void novoGif(String caminhoDoGif) {
+        File file = new File(caminhoDoGif);
+        if (file.exists()) {
+            ImageIcon gifIcon = new ImageIcon(caminhoDoGif);
+            gif_flutua.setIcon(gifIcon);
+            setSize(gifIcon.getIconWidth(), gifIcon.getIconHeight());
+            revalidate();
+            repaint();
+            
+            setVisible(true);
+            timer.start();
+        } else {
+            System.err.println("Erro: Arquivo GIF não encontrado: " + caminhoDoGif);
+            JOptionPane.showMessageDialog(null, "Caminho do GIF inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void ajustarVelocidade(int delay) {
+        if (delay >= VELOCIDADE_MINIMA) {
+            timer.setDelay(delay);
+        }
+    }
+
+    public void pararExecucao() {
+        if (timer.isRunning()) {
+            timer.stop();
+        }
+        dispose();
+    }
 	
 
 }
