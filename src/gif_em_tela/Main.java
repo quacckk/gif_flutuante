@@ -1,27 +1,19 @@
 package gif_em_tela;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import java.net.URL;
 
 public class Main {
-    private List<gifAtivar> gifs = new ArrayList<>();
-    private int velocidadeAtual = 10;
+
+    private GifManager gifManager = new GifManager();
 
     public Main() {
         JFrame frame = new JFrame("Controle de Múltiplos GIFs");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 250);
+        frame.setSize(300, 300);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Controle os GIFs Flutuantes");
@@ -29,7 +21,6 @@ public class Main {
         frame.add(Box.createVerticalStrut(15));
         frame.add(titleLabel);
 
-        // Botão para abrir o seletor de arquivo e adicionar um novo GIF
         JButton openFileButton = new JButton("Adicionar Novo GIF");
         openFileButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
         openFileButton.addActionListener(new ActionListener() {
@@ -37,8 +28,6 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                
-                // Filtra para exibir apenas arquivos .gif
                 fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
                     public boolean accept(File f) {
                         return f.getName().toLowerCase().endsWith(".gif") || f.isDirectory();
@@ -47,40 +36,46 @@ public class Main {
                         return "Arquivos GIF (*.gif)";
                     }
                 });
-
                 int result = fileChooser.showOpenDialog(frame);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    gifAtivar novoGif = new gifAtivar(selectedFile.getAbsolutePath());
-                    novoGif.ajustarVelocidade(velocidadeAtual);
-                    gifs.add(novoGif);
+                    // Continua usando o método antigo para arquivos locais
+                    gifManager.adicionarGif(selectedFile.getAbsolutePath());
                 }
             }
         });
 
-        // Botão para parar TODOS os GIFs
+        JButton defaultGifButton = new JButton("Adicionar GIF Padrão");
+        defaultGifButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        defaultGifButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Tenta carregar o recurso usando ClassLoader
+                URL gifUrl = Main.class.getResource("/img/olha ali.gif");
+                if (gifUrl != null) {
+                    // Passa a URL diretamente para o GifManager
+                    gifManager.adicionarGifPadrao(gifUrl);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro: Arquivo padrão não encontrado. Verifique se ele está na pasta 'img' na raiz do seu projeto.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         JButton stopAllButton = new JButton("Parar Todos os GIFs");
         stopAllButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
         stopAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (gifAtivar gif : gifs) {
-                    gif.pararExecucao();
-                }
-                gifs.clear();
+                gifManager.pararTodos();
             }
         });
-        
-        // Botões de controle de velocidade
+
         JButton speedUpButton = new JButton("Aumentar Velocidade");
         speedUpButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
         speedUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                velocidadeAtual = Math.max(1, velocidadeAtual - 5);
-                for (gifAtivar gif : gifs) {
-                    gif.ajustarVelocidade(velocidadeAtual);
-                }
+                gifManager.aumentarVelocidade();
             }
         });
 
@@ -89,27 +84,24 @@ public class Main {
         slowDownButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                velocidadeAtual += 5;
-                for (gifAtivar gif : gifs) {
-                    gif.ajustarVelocidade(velocidadeAtual);
-                }
+                gifManager.diminuirVelocidade();
             }
         });
-        
+
         JButton exitButton = new JButton("Fechar");
         exitButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (gifAtivar gif : gifs) {
-                    gif.dispose();
-                }
+                gifManager.fecharTodosGifs();
                 frame.dispose();
             }
         });
 
         frame.add(Box.createVerticalStrut(10));
         frame.add(openFileButton);
+        frame.add(Box.createVerticalStrut(10));
+        frame.add(defaultGifButton);
         frame.add(Box.createVerticalStrut(10));
         frame.add(speedUpButton);
         frame.add(Box.createVerticalStrut(10));
@@ -124,9 +116,8 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Main();
+                new painel();
             }
         });
     }
 }
-

@@ -1,129 +1,94 @@
 package gif_em_tela;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import javax.swing.SpringLayout;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollBar;
+import java.awt.event.ActionListener;
+import java.awt.SpringLayout;
 
 public class painel extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JLabel lblNewLabel;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField textFieldNome;
+    private JTextField textFieldIdade;
+    private JLabel lblStatus;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					painel frame = new painel();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public painel() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		SpringLayout sl_contentPane = new SpringLayout();
-		contentPane.setLayout(sl_contentPane);
-		
-		JLabel lbl_nome = new JLabel("NOME:");
-		sl_contentPane.putConstraint(SpringLayout.WEST, lbl_nome, 5, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lbl_nome, -143, SpringLayout.SOUTH, contentPane);
-		contentPane.add(lbl_nome);
-		
-		JLabel lbl_idade = new JLabel("IDADE:");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lbl_idade, 138, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lbl_idade, 5, SpringLayout.WEST, contentPane);
-		contentPane.add(lbl_idade);
-		
-		textField = new JTextField();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, textField, 91, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lbl_nome, -11, SpringLayout.WEST, textField);
-		sl_contentPane.putConstraint(SpringLayout.WEST, textField, 65, SpringLayout.WEST, contentPane);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, textField_1, 135, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, textField_1, 25, SpringLayout.EAST, lbl_idade);
-		sl_contentPane.putConstraint(SpringLayout.EAST, textField_1, -55, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, textField, 0, SpringLayout.EAST, textField_1);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
-		
-		JButton btnNewButton = new JButton("ENTRAR");
-		
-				sl_contentPane.putConstraint(SpringLayout.WEST, btnNewButton, -260, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, btnNewButton, -161, SpringLayout.EAST, contentPane);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Double idade = Double.parseDouble(textField_1.getText()) ;
-					//quando ele está vazio ele entra nesse if, fazendo com que o usuário coloque o seu nome
-					if(textField.getText().isEmpty() || idade <18) {
-						lblNewLabel.setText("Acesso inválido");
-					}else {
-						//cria um segunda tela
-						painel02 frame = new painel02();
-						frame.setVisible(true);
-						
-					}	
-				}catch (NumberFormatException ex) {
-                    lblNewLabel.setText("Erro: Digite uma idade válida.");
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    painel frame = new painel();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-				
-			}
-		});
-		contentPane.add(btnNewButton);
-		
-		lblNewLabel = new JLabel("");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblNewLabel, 13, SpringLayout.SOUTH, textField_1);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblNewLabel, 74, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblNewLabel, -69, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblNewLabel, -55, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, btnNewButton, 11, SpringLayout.SOUTH, lblNewLabel);
-		contentPane.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Bem vindo ao gif creator");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblNewLabel_1, 10, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblNewLabel_1, -144, SpringLayout.EAST, contentPane);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("Primeiro faça o login para depois acessar o painel de controle ");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblNewLabel_2, 6, SpringLayout.SOUTH, lblNewLabel_1);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblNewLabel_2, 0, SpringLayout.WEST, textField);
-		contentPane.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblNewLabel_3, 13, SpringLayout.SOUTH, lblNewLabel_2);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblNewLabel_3, 188, SpringLayout.WEST, contentPane);
-		contentPane.add(lblNewLabel_3);
-	}
-	//um mêtodo que verifica que se o input está vazio
+            }
+        });
+    }
+
+    public painel() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        SpringLayout sl_contentPane = new SpringLayout();
+        contentPane.setLayout(sl_contentPane);
+
+        JLabel lbl_nome = new JLabel("NOME:");
+        sl_contentPane.putConstraint(SpringLayout.WEST, lbl_nome, 10, SpringLayout.WEST, contentPane);
+        sl_contentPane.putConstraint(SpringLayout.NORTH, lbl_nome, 50, SpringLayout.NORTH, contentPane);
+        contentPane.add(lbl_nome);
+
+        textFieldNome = new JTextField();
+        sl_contentPane.putConstraint(SpringLayout.NORTH, textFieldNome, 45, SpringLayout.NORTH, contentPane);
+        sl_contentPane.putConstraint(SpringLayout.WEST, textFieldNome, 70, SpringLayout.WEST, contentPane);
+        sl_contentPane.putConstraint(SpringLayout.EAST, textFieldNome, -50, SpringLayout.EAST, contentPane);
+        contentPane.add(textFieldNome);
+        textFieldNome.setColumns(10);
+
+        JLabel lbl_idade = new JLabel("IDADE:");
+        sl_contentPane.putConstraint(SpringLayout.WEST, lbl_idade, 10, SpringLayout.WEST, contentPane);
+        sl_contentPane.putConstraint(SpringLayout.NORTH, lbl_idade, 15, SpringLayout.SOUTH, lbl_nome);
+        contentPane.add(lbl_idade);
+
+        textFieldIdade = new JTextField();
+        sl_contentPane.putConstraint(SpringLayout.NORTH, textFieldIdade, 10, SpringLayout.SOUTH, textFieldNome);
+        sl_contentPane.putConstraint(SpringLayout.WEST, textFieldIdade, 0, SpringLayout.WEST, textFieldNome);
+        sl_contentPane.putConstraint(SpringLayout.EAST, textFieldIdade, 0, SpringLayout.EAST, textFieldNome);
+        contentPane.add(textFieldIdade);
+        textFieldIdade.setColumns(10);
+
+        JButton btnEntrar = new JButton("ENTRAR");
+        btnEntrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double idade = Double.parseDouble(textFieldIdade.getText());
+                    if (textFieldNome.getText().isEmpty() || idade < 18) {
+                        lblStatus.setText("Acesso inválido: Nome vazio ou idade menor que 18.");
+                    } else {
+                        // Fecha a janela atual e abre a tela principal (Main)
+                        dispose();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                new Main();
+                            }
+                        });
+                    }
+                } catch (NumberFormatException ex) {
+                    lblStatus.setText("Erro: Digite uma idade válida.");
+                }
+            }
+        });
+        sl_contentPane.putConstraint(SpringLayout.NORTH, btnEntrar, 30, SpringLayout.SOUTH, textFieldIdade);
+        sl_contentPane.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnEntrar, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+        contentPane.add(btnEntrar);
+
+        lblStatus = new JLabel("");
+        sl_contentPane.putConstraint(SpringLayout.NORTH, lblStatus, 15, SpringLayout.SOUTH, btnEntrar);
+        sl_contentPane.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblStatus, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+        contentPane.add(lblStatus);
+    }
 }
